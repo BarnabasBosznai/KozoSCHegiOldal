@@ -19,10 +19,10 @@ import hu.bme.aut.android.kozoschegioldal.MainActivity
 import hu.bme.aut.android.kozoschegioldal.R
 import kotlin.random.Random
 
-private const val CHANNEL_ID = "notification_channel"
-
 class NotificationFirebaseMessagingService : FirebaseMessagingService() {
     companion object {
+        private const val CHANNEL_ID = "notification_channel"
+
         var sharedPref: SharedPreferences? = null
 
         var token: String?
