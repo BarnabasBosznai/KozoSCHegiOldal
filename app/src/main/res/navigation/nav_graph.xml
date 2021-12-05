@@ -56,6 +56,9 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_right"
             app:popExitAnim="@anim/slide_out_right" />
+        <argument
+            android:name="user"
+            app:argType="hu.bme.aut.android.kozoschegioldal.model.User" />
     </fragment>
     <fragment
         android:id="@+id/createPostFragment"

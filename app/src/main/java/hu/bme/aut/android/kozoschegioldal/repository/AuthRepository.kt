@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.FirebaseMessaging
@@ -17,19 +18,22 @@ class AuthRepository(private var application: Application) {
     private var firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
     private var userLiveData: MutableLiveData<FirebaseUser?> = MutableLiveData()
     private var loggedOutLiveData: MutableLiveData<Boolean> = MutableLiveData()
+    private var ownUser: MutableLiveData<User?> = MutableLiveData()
 
     init {
         if (firebaseAuth.currentUser != null) {
             userLiveData.postValue(firebaseAuth.currentUser)
             loggedOutLiveData.postValue(false)
+            getUser()
         }
     }
 
-        fun login(email: String, password: String) {
+    fun login(email: String, password: String) {
             firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener {
                 if (it.isSuccessful) {
                     userLiveData.postValue(firebaseAuth.currentUser)
                     loggedOutLiveData.postValue(false)
+                    getUser()
                     FirebaseMessaging.getInstance().token.addOnCompleteListener { tokenTask ->
                         if (tokenTask.isSuccessful) {
                             if (tokenTask.result != null && tokenTask.result != NotificationFirebaseMessagingService.token) {
@@ -59,6 +63,7 @@ class AuthRepository(private var application: Application) {
         firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener {
             if (it.isSuccessful) {
                 val user = firebaseAuth.currentUser
+                getUser()
                 user!!.updateProfile(UserProfileChangeRequest.Builder().setDisplayName(name).build())
                     .addOnCompleteListener { task ->
                         if (task.isSuccessful) {
@@ -96,8 +101,20 @@ class AuthRepository(private var application: Application) {
         firebaseAuth.signOut()
         userLiveData.postValue(null)
         loggedOutLiveData.postValue(true)
+        ownUser.postValue(null)
     }
 
     fun getUserLiveData() = userLiveData
     fun getLoggedOutLiveData() = loggedOutLiveData
+    fun getOwnUserLiveData() = ownUser
+
+    private fun getUser() {
+        val uid = Firebase.auth.currentUser?.uid
+        if (uid != null) {
+            Firebase.firestore.collection("users").document(uid).get()
+                .addOnSuccessListener {
+                    ownUser.postValue(it.toObject(User::class.java))
+                }
+        }
+    }
 }

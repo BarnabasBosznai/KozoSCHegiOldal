@@ -21,4 +21,5 @@ class AuthViewModel(private val app: Application) : AndroidViewModel(app) {
 
     fun getUserLiveData() = authRepository.getUserLiveData()
     fun getLoggedOutLiveData() = authRepository.getLoggedOutLiveData()
+    fun getOwnUserLiveData() = authRepository.getOwnUserLiveData()
 }

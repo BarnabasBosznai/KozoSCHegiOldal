@@ -16,7 +16,6 @@ import java.util.*
 
 class PostRepository {
     private val storageRef = Firebase.storage.reference
-
     private val baseQuery = Firebase.firestore.collection("posts").orderBy("date", Query.Direction.DESCENDING)
     private val config = PagingConfig(5,1, false)
 

@@ -73,7 +73,12 @@ class MainActivity : AppCompatActivity() {
             if (user != null) {
                 val header = binding.navView.getHeaderView(0)
                 header.findViewById<TextView>(R.id.tvProfileName).text = user.displayName
-                findNavController(binding.navHostFragment.id).navigate(LoginFragmentDirections.actionLoginFragmentToLoggedInFragment())
+            }
+        })
+
+        authViewModel.getOwnUserLiveData().observe(this, { user ->
+            if (user != null) {
+                findNavController(binding.navHostFragment.id).navigate(LoginFragmentDirections.actionLoginFragmentToLoggedInFragment(user))
             }
         })
 

@@ -22,9 +22,10 @@ class RegisterFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        authViewModel.getUserLiveData().observe(this, { user ->
+        //authViewModel.getUserLiveData().observe(this, { user ->
+        authViewModel.getOwnUserLiveData().observe(this, { user ->
             if (user != null) {
-                findNavController().navigate(RegisterFragmentDirections.actionRegisterFragmentToLoggedInFragment())
+                findNavController().navigate(RegisterFragmentDirections.actionRegisterFragmentToLoggedInFragment(user))
             }
         })
     }

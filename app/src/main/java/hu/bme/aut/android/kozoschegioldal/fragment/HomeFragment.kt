@@ -13,14 +13,17 @@ import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import hu.bme.aut.android.kozoschegioldal.adapter.CustomFirestorePagingAdapter
 import hu.bme.aut.android.kozoschegioldal.databinding.FragmentHomeBinding
+import hu.bme.aut.android.kozoschegioldal.model.User
 import hu.bme.aut.android.kozoschegioldal.viewmodel.PostViewModel
+import hu.bme.aut.android.kozoschegioldal.viewmodel.PostViewModelFactory
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
-    private val postViewModel: PostViewModel by activityViewModels()
+    private lateinit var user: User
+    private val postViewModel: PostViewModel by activityViewModels { PostViewModelFactory(user) }
     private lateinit var finalAdapter: CustomFirestorePagingAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,6 +42,8 @@ class HomeFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
+
+        user = HomeFragmentArgs.fromBundle(requireArguments()).user
 
         finalAdapter = CustomFirestorePagingAdapter(this, postViewModel.getPostsAdapterOptions(this))
 
