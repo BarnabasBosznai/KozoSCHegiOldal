@@ -11,8 +11,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.*
-import com.google.android.play.core.internal.bi
 import hu.bme.aut.android.kozoschegioldal.databinding.ActivityMainBinding
+import hu.bme.aut.android.kozoschegioldal.fragment.HomeFragmentDirections
+import hu.bme.aut.android.kozoschegioldal.fragment.LoginFragmentDirections
 import hu.bme.aut.android.kozoschegioldal.service.NotificationFirebaseMessagingService
 import hu.bme.aut.android.kozoschegioldal.viewmodel.AuthViewModel
 
@@ -41,6 +42,11 @@ class MainActivity : AppCompatActivity() {
 
         binding.navView.setNavigationItemSelectedListener {
             when (it.itemId) {
+                R.id.nav_create_post -> {
+                    findNavController(binding.navHostFragment.id).navigate(HomeFragmentDirections.actionLoggedInFragmentToCreatePostFragment())
+                    binding.drawerLayout.closeDrawer(GravityCompat.START)
+                    true
+                }
                 R.id.nav_logout -> {
                     authViewModel.logout()
                     true
@@ -67,6 +73,13 @@ class MainActivity : AppCompatActivity() {
             if (user != null) {
                 val header = binding.navView.getHeaderView(0)
                 header.findViewById<TextView>(R.id.tvProfileName).text = user.displayName
+                findNavController(binding.navHostFragment.id).navigate(LoginFragmentDirections.actionLoginFragmentToLoggedInFragment())
+            }
+        })
+
+        authViewModel.getLoggedOutLiveData().observe(this, { loggedOut ->
+            if (loggedOut) {
+                findNavController(binding.navHostFragment.id).navigate(NavGraphDirections.actionGlobalLoginFragment())
             }
         })
     }

@@ -24,11 +24,11 @@ class LoginFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        authViewModel.getUserLiveData().observe(this, { user ->
+        /*authViewModel.getUserLiveData().observe(this, { user ->
             if (user != null) {
                 findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToLoggedInFragment())
             }
-        })
+        })*/
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {

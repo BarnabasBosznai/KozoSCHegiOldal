@@ -10,11 +10,12 @@ import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.FirebaseMessaging
+import hu.bme.aut.android.kozoschegioldal.model.User
 import hu.bme.aut.android.kozoschegioldal.service.NotificationFirebaseMessagingService
 
 class AuthRepository(private var application: Application) {
     private var firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
-    private var userLiveData: MutableLiveData<FirebaseUser> = MutableLiveData()
+    private var userLiveData: MutableLiveData<FirebaseUser?> = MutableLiveData()
     private var loggedOutLiveData: MutableLiveData<Boolean> = MutableLiveData()
 
     init {
@@ -35,7 +36,7 @@ class AuthRepository(private var application: Application) {
                                 val userDockRef = Firebase.firestore.collection("users").document(firebaseAuth.currentUser!!.uid)
                                 userDockRef.get().addOnCompleteListener { documentTask ->
                                     if (documentTask.isSuccessful) {
-                                        userDockRef.update("fcm_token", tokenTask.result).addOnCompleteListener { upd ->
+                                        userDockRef.update("fcmToken", tokenTask.result).addOnCompleteListener { upd ->
                                             if (upd.isSuccessful) {
                                                 Log.d("TokenUpdate", "Successful")
                                             } else {
@@ -66,11 +67,12 @@ class AuthRepository(private var application: Application) {
                     }
                 FirebaseMessaging.getInstance().token.addOnCompleteListener { tokenTask ->
                     if (tokenTask.isSuccessful) {
-                        Firebase.firestore.collection("users").document(user.uid).set(hashMapOf(
+                        val newUser = User(user.uid, tokenTask.result!!)
+                        Firebase.firestore.collection("users").document(user.uid).set(newUser/*hashMapOf(
                                 "uid" to user.uid,
                                 "fcm_token" to tokenTask.result,
                                 "photo_url" to ""
-                        )).addOnCompleteListener { task ->
+                        )*/).addOnCompleteListener { task ->
                             if (task.isSuccessful) {
                                 userLiveData.postValue(user)
                                 Log.d("UserCreation", "Successful")

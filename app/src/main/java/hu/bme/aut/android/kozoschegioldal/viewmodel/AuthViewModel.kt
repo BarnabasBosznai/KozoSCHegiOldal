@@ -1,7 +1,6 @@
 package hu.bme.aut.android.kozoschegioldal.viewmodel
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import hu.bme.aut.android.kozoschegioldal.repository.AuthRepository
 
@@ -17,7 +16,6 @@ class AuthViewModel(private val app: Application) : AndroidViewModel(app) {
     }
 
     fun logout() {
-        Log.d("LogoutTriggered", "LogoutTrigger")
         authRepository.logout()
     }
 

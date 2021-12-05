@@ -46,7 +46,20 @@
         app:popUpToInclusive="true" />
     <fragment
         android:id="@+id/loggedInFragment"
-        android:name="hu.bme.aut.android.kozoschegioldal.fragment.LoggedInFragment"
-        android:label="LoggedInFragment"
-        tools:layout="@layout/fragment_logged_in"/>
+        android:name="hu.bme.aut.android.kozoschegioldal.fragment.HomeFragment"
+        android:label="KözöSCHégi Oldal"
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_loggedInFragment_to_createPostFragment"
+            app:destination="@id/createPostFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/createPostFragment"
+        android:name="hu.bme.aut.android.kozoschegioldal.fragment.CreatePostFragment"
+        android:label="Create new post"
+        tools:layout="@layout/fragment_create_post"/>
 </navigation>
