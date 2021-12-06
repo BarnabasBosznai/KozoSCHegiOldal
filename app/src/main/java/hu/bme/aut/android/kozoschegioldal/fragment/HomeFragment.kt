@@ -90,33 +90,10 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        //FirebaseMessaging.getInstance().subscribeToTopic()
-
-        /*PushNotification(NotificationData("Helle there!", "I have come online"),
-            "eqOGZOBKSNCrGgbx7nmmS0:APA91bE5vcJ29c_RkQvDVBye2i5PaT3rrJoRs5Xxe2YIwWPN6z8G2E2EI78HTJFshdkvpDIZdOlSoUcoAcSiE3VzvY3JcG6wBu5xNTGzECGLVE1LF6KvJLquoR2McLcc4Pui2h6fLhGE")
-            .also {
-                tempSendNotification(it)
-            }*/
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
-
-
-
-    /*private fun tempSendNotification(notification: PushNotification) = CoroutineScope(Dispatchers.IO).launch {
-        try {
-            val response = NotificationRetrofitInstance.api.postNotification(notification)
-            if (response.isSuccessful) {
-                Log.d("SendNotification", "Response: ${Gson().toJson(response.body())}")
-            } else {
-                Log.d("SendNotification", response.errorBody().toString())
-            }
-        } catch (e: Exception) {
-            Log.d("SendNotification", e.toString())
-        }
-    }*/
 }

@@ -72,7 +72,7 @@ class AuthRepository(private var application: Application) {
                     }
                 FirebaseMessaging.getInstance().token.addOnCompleteListener { tokenTask ->
                     if (tokenTask.isSuccessful) {
-                        val newUser = User(user.uid, tokenTask.result!!)
+                        val newUser = User(user.uid, tokenTask.result!!, displayName = name)
                         Firebase.firestore.collection("users").document(user.uid).set(newUser/*hashMapOf(
                                 "uid" to user.uid,
                                 "fcm_token" to tokenTask.result,

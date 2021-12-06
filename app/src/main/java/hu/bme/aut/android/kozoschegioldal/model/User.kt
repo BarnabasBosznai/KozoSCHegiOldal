@@ -6,5 +6,6 @@ import android.os.Parcelable
 data class User(
     val uid: String = "",
     val fcmToken: String = "",
-    val photoUrl: String? = null
+    val photoUrl: String? = null,
+    var displayName: String = ""
 ) : Parcelable

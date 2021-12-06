@@ -20,7 +20,7 @@
             app:popExitAnim="@anim/slide_out_left" />
         <action
             android:id="@+id/action_loginFragment_to_loggedInFragment"
-            app:destination="@id/loggedInFragment"
+            app:destination="@id/homeFragment"
             app:enterAnim="@anim/slide_in_left"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_right"
@@ -35,7 +35,7 @@
         tools:layout="@layout/fragment_register" >
         <action
             android:id="@+id/action_registerFragment_to_loggedInFragment"
-            app:destination="@id/loggedInFragment"
+            app:destination="@id/homeFragment"
             app:popUpTo="@id/registerFragment"
             app:popUpToInclusive="true" />
     </fragment>
@@ -45,7 +45,7 @@
         app:popUpTo="@id/nav_graph"
         app:popUpToInclusive="true" />
     <fragment
-        android:id="@+id/loggedInFragment"
+        android:id="@+id/homeFragment"
         android:name="hu.bme.aut.android.kozoschegioldal.fragment.HomeFragment"
         android:label="KözöSCHégi Oldal"
         tools:layout="@layout/fragment_home">
@@ -59,10 +59,61 @@
         <argument
             android:name="user"
             app:argType="hu.bme.aut.android.kozoschegioldal.model.User" />
+        <action
+            android:id="@+id/action_homeFragment_to_chatListFragment"
+            app:destination="@id/chatListFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/createPostFragment"
         android:name="hu.bme.aut.android.kozoschegioldal.fragment.CreatePostFragment"
         android:label="Create new post"
         tools:layout="@layout/fragment_create_post"/>
+    <fragment
+        android:id="@+id/chatMessageListFragment"
+        android:name="hu.bme.aut.android.kozoschegioldal.fragment.ChatMessageListFragment"
+        android:label="Chat"
+        tools:layout="@layout/fragment_chat_message_list">
+        <argument
+            android:name="user"
+            app:argType="hu.bme.aut.android.kozoschegioldal.model.User" />
+        <argument
+            android:name="group"
+            app:argType="hu.bme.aut.android.kozoschegioldal.model.Group" />
+    </fragment>
+    <fragment
+        android:id="@+id/chatListFragment"
+        android:name="hu.bme.aut.android.kozoschegioldal.fragment.ChatListFragment"
+        android:label="Chats"
+        tools:layout="@layout/fragment_chat_list">
+        <action
+            android:id="@+id/action_chatListFragment_to_chatMessageListFragment"
+            app:destination="@id/chatMessageListFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_right" />
+        <argument
+            android:name="user"
+            app:argType="hu.bme.aut.android.kozoschegioldal.model.User" />
+        <action
+            android:id="@+id/action_chatListFragment_to_createGroupFragment"
+            app:destination="@id/createGroupFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/createGroupFragment"
+        android:name="hu.bme.aut.android.kozoschegioldal.fragment.CreateGroupFragment"
+        android:label="Create new Group"
+        tools:layout="@layout/fragment_create_group">
+        <argument
+            android:name="user"
+            app:argType="hu.bme.aut.android.kozoschegioldal.model.User" />
+    </fragment>
 </navigation>

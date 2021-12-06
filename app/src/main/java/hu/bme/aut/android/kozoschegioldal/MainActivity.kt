@@ -2,6 +2,7 @@ package hu.bme.aut.android.kozoschegioldal
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -14,6 +15,7 @@ import androidx.navigation.ui.*
 import hu.bme.aut.android.kozoschegioldal.databinding.ActivityMainBinding
 import hu.bme.aut.android.kozoschegioldal.fragment.HomeFragmentDirections
 import hu.bme.aut.android.kozoschegioldal.fragment.LoginFragmentDirections
+import hu.bme.aut.android.kozoschegioldal.helper.observeOnce
 import hu.bme.aut.android.kozoschegioldal.service.NotificationFirebaseMessagingService
 import hu.bme.aut.android.kozoschegioldal.viewmodel.AuthViewModel
 
@@ -36,7 +38,7 @@ class MainActivity : AppCompatActivity() {
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
 
-        appBarConfiguration = AppBarConfiguration(setOf(R.id.loggedInFragment), binding.drawerLayout)
+        appBarConfiguration = AppBarConfiguration(setOf(R.id.homeFragment), binding.drawerLayout)
         setupActionBarWithNavController(navController, appBarConfiguration)
         binding.navView.setupWithNavController(navController)
 
@@ -45,6 +47,11 @@ class MainActivity : AppCompatActivity() {
                 R.id.nav_create_post -> {
                     findNavController(binding.navHostFragment.id).navigate(HomeFragmentDirections.actionLoggedInFragmentToCreatePostFragment())
                     binding.drawerLayout.closeDrawer(GravityCompat.START)
+                    true
+                }
+                R.id.nav_chat -> {
+                    binding.drawerLayout.closeDrawer(GravityCompat.START)
+                    findNavController(binding.navHostFragment.id).navigate(HomeFragmentDirections.actionHomeFragmentToChatListFragment(authViewModel.getOwnUserLiveData().value!!))
                     true
                 }
                 R.id.nav_logout -> {
@@ -62,6 +69,9 @@ class MainActivity : AppCompatActivity() {
                     binding.toolbar.visibility = View.GONE
                     binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
                 }
+                R.id.createPostFragment, R.id.chatListFragment, R.id.chatMessageListFragment, R.id.createGroupFragment -> {
+                    binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+                }
                 else -> {
                     binding.toolbar.visibility = View.VISIBLE
                     binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
@@ -69,16 +79,10 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        authViewModel.getUserLiveData().observe(this, { user ->
+        authViewModel.getOwnUserLiveData().observeOnce(this, { user ->
             if (user != null) {
                 val header = binding.navView.getHeaderView(0)
                 header.findViewById<TextView>(R.id.tvProfileName).text = user.displayName
-            }
-        })
-
-        authViewModel.getOwnUserLiveData().observe(this, { user ->
-            if (user != null) {
-                findNavController(binding.navHostFragment.id).navigate(LoginFragmentDirections.actionLoginFragmentToLoggedInFragment(user))
             }
         })
 

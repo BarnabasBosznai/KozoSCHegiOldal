@@ -71,7 +71,7 @@ class PostRepository {
                 .addOnFailureListener {
                     success = false
                     callback.onFailure(it)
-                    Log.d("POSTERROR", it.message ?: "no message")
+                    //Log.d("POSTERROR", it.message ?: "no message")
                     postRef.delete()
                 }
         }

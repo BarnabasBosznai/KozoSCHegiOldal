@@ -8,9 +8,6 @@
             android:id="@+id/nav_chat"
             android:title="Open chat" />
         <item
-            android:id="@+id/nav_view_profile"
-            android:title="Edit my profile" />
-        <item
             android:id="@+id/nav_logout"
             android:title="Logout" />
     </group>
